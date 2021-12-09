@@ -236,12 +236,5 @@ public class DirectedWeightedGraphAlgorithms implements Directed_Weighted_Graph_
             return false;
         }
 
-
-        private void setWeights ( double weights){
-            for (node_data v : algo.getV()) {
-                v.setWeight(weights);
-                v.setTag(-1);
-            }
-        }
     }
-}
+
