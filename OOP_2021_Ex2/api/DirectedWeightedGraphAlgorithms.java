@@ -67,9 +67,9 @@ public class DirectedWeightedGraphAlgorithms implements Directed_Weighted_Graph_
         if (src == dest) {
             return 0;
         } //the path from node to itself is 0
-        Dijkstra(src, dest);
-        if (end.getWeight() != 0) {
-            return end.getWeight();
+       double path= Dijkstra(src, dest);
+        if (path != 0) {
+            return path;
         }
         return -1;
     }
@@ -77,9 +77,7 @@ public class DirectedWeightedGraphAlgorithms implements Directed_Weighted_Graph_
     private double Dijkstra(int start, int end) {
         Node_Data Start = G.getNode(start);
         Node_Data End = G.getNode(end);
-
         PriorityQueue<Node_Data> q = new PriorityQueue<>(Comparator.comparingDouble(Node_Data::getWeight));
-
         for (Iterator<Node_Data> it = G.nodeIter(); it.hasNext(); ) {
             Node_Data node = it.next();
             node.setInfo("null");
@@ -88,14 +86,12 @@ public class DirectedWeightedGraphAlgorithms implements Directed_Weighted_Graph_
         Start.setWeight(0);
         q.add(Start);
         while (!q.isEmpty()) {
-
             Node_Data temp = q.remove();
             if (!temp.getInfo().contains("visited")) {
                 temp.setInfo(temp.getInfo() + " visited");
                 if (temp.getKey() == End.getKey()) {
                     return temp.getWeight();
                 }
-
                 for (Iterator<Edge_Data> it = G.edgeIter(temp.getKey()); it.hasNext(); ) {
                     Edge_Data e = it.next();
                     Node_Data neighbor = G.getNode(e.getDest());
@@ -111,7 +107,6 @@ public class DirectedWeightedGraphAlgorithms implements Directed_Weighted_Graph_
                 }
             }
         }
-
         return -1;
     }
 
@@ -151,7 +146,7 @@ public class DirectedWeightedGraphAlgorithms implements Directed_Weighted_Graph_
     @Override
     public List<Node_Data> tsp(List<Node_Data> cities) {
         Node_Data first = cities.get(0);
-        ArrayList<Node_Data> shorter = new ArrayList<>();
+        ArrayList<Node_Data> AllPathes = new ArrayList<>();
         while (cities.size() > 0) {
             double min = Double.MAX_VALUE;
             for (int i = 1; i < cities.size() - 1; i++) {
@@ -159,11 +154,13 @@ public class DirectedWeightedGraphAlgorithms implements Directed_Weighted_Graph_
                 double temp = shortestPathDist(first.getKey(), cities.get(i).getKey());
                 if (temp < min) {
                     min = temp;
-                    shorter.addAll(shortestPath(first.getKey(), cities.get(i).getKey()));
+                    AllPathes.addAll(shortestPath(first.getKey(), cities.get(i).getKey()));
                 }
             }
-            return cities;
+            cities.remove(0);
+            first = cities.get(0);
         }
+        return AllPathes;
     }
 
         @Override
