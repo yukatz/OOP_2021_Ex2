@@ -5,28 +5,28 @@ public class NodeData implements Node_Data {
     private String info;
     private Geo_Location location;
 
-    public NodeData(int key, Geo_Location gl){
-        this.tag=Integer.MAX_VALUE;
+    public NodeData(double x , double y , double z, int key){
+        this.tag=0;
         this.info = "";
         this.key = key;
         this.weight = 0.0;
-        this.location = gl;
+        location = new GeoLocation(x,y,z);
     }
 
-    public NodeData(int key, Geo_Location g, String info, int tag){
+    public NodeData(int key, Geo_Location g){
         this.key= key;
         this.location= g;
-        this.info= info;
-        this.tag= tag;
+        this.tag = 0;
+        this.weight = 0;
+        this.info = "";
     }
 
 
-    public NodeData(int key, int tag, String info, double weight, Geo_Location location){
-        this.tag=tag;
-        this.info = info;
-        this.key = key;
-        this.weight = weight;
-        this.location = location;
+    public NodeData(Node_Data n){
+        this.info = n.getInfo();
+        this.key = n.getKey();
+        this.weight = n.getWeight();
+        this.location = n.getLocation();
     }
 
 
