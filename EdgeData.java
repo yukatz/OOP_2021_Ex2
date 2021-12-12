@@ -1,4 +1,3 @@
-
 public class EdgeData implements Edge_Data {
     private int src;
     private int dest;
@@ -10,6 +9,8 @@ public class EdgeData implements Edge_Data {
         this.src = source;
         this.dest = destination;
         this.weight = weight;
+        this.tag=-1;
+        this.info="";
 
     }
     public EdgeData(int src, int dest, double weight, String info, int tag){
