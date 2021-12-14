@@ -14,7 +14,11 @@
   > Represents Graph by Lists of Nodes and Edges. For list we used Hash map. Edge list built from hash map of hash maps.
 - [x] Directed Weighted Graph Algorithms:
   > Represents algorithms that can be used on directed graph:
-    - > hhhh
+    - > 1.represent if the graph is connected.
+    - > 2.represent the shortest path between source and destination given nodes.
+    -  > 3.represent the shortest path in the graph between vertex.
+     - > 4.represent the center of the graph.
+     - > 5.represent a solution to tsp problem.
 
 
 
