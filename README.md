@@ -7,6 +7,6 @@ OOP Course - Exercise N'2 -Directed Weighted Graph Algorithms
 |   1,000 Nodes    | Content Cell |  Content Cell  | Content Cell              | Cell   | Cell|
 |   10,000 Nodes   | Content Cell |  Content Cell  | Content Cell              | Cell   | Cell|
 |  100,000 Nodes   | Content Cell |  Content Cell  | Content Cell              | Cell   | Cell|
-| 1,000,000 Nodes  | \            |  Content Cell  | Content Cell              | Cell   | Cell|
+| 1,000,000 Nodes  | \ |          |  Content Cell  | Content Cell              | Cell   | Cell|
 
 
