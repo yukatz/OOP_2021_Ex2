@@ -1,7 +1,11 @@
 # OOP_2021_Ex2
 ## OOP Course - Exercise N'2 -Directed Weighted Graph Algorithms
 ***By Yulia Katz ID:324385509  and Avidan Abitbul ID:302298963***
-@ 
+
+## Execution stages
+![‏‏PlanforReadmrjpg](https://user-images.githubusercontent.com/92925727/146073760-dab08b91-fa9d-4bf9-a79d-deb71809cc4c.jpg)
+
+
 
 ## ***Classes:***
 - [x] **Node Data**
@@ -14,7 +18,13 @@
   > Represents Graph by Lists of Nodes and Edges. For list we used Hash map. Edge list built from hash map of hash maps.
 - [x] Directed Weighted Graph Algorithms:
   > Represents algorithms that can be used on directed graph:
-    - > hhhh
+    - **isConnected** - Cheking if  there is a valid path from each node to others.
+    - **Shoretest Path Distenation** - Computes the length of the shortest path between source to destination.
+    - **Shoretest Path** - Presents the shortest path between source to destination.
+    - **Center** - Finds the vertex which minimizes the max distance to all the other nodes
+    - **TSP** - *Travelling salesman problem* - Computes a list of consecutive nodes wich go over all the nodes in cities. 
+      _- https://en.wikipedia.org/wiki/Travelling_salesman_problem
+     
 
 
 
