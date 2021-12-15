@@ -30,6 +30,7 @@
       _- https://en.wikipedia.org/wiki/Travelling_salesman_problem
      
 # **UML**
+![UML](https://user-images.githubusercontent.com/80645472/146196606-6adecdf8-abf3-46e9-bd68-32ca05cdadde.png)
 
 
 
