@@ -102,4 +102,16 @@ public int compareTo(Node_Data other) {
     public void setTag(int t) {
        this.tag = t;
     }
+
+    @Override
+    public String toString() {
+        return "NodeData{" +
+                "key=" + key +
+
+
+
+                ", location=" + location +
+
+                '}';
+    }
 }

@@ -1,3 +1,4 @@
+import Interfaces.Directed_Weighted_Graph;
 import Interfaces.Edge_Data;
 import Interfaces.Node_Data;
 
@@ -25,9 +26,11 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
     JMenuItem shortestPathDist;
     JMenuItem center;
     JMenuItem isConected;
+    String message;
+
     private Panel panel;
     private ActionEvent e;
-    private DirectedWeightedGraph G;
+    private Directed_Weighted_Graph G;
     private DirectedWeightedGraphAlgorithms graph_algo;
 
     public GUIGraph(DirectedWeightedGraphAlgorithms g) {
@@ -37,7 +40,7 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
         this.setSize(screenSize.width / 2, screenSize.height / 2);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Yulia&Avidan Graph");
-        ImageIcon gr = new ImageIcon("./api/Research/graphicon.png");
+        ImageIcon gr = new ImageIcon("Data/graphicon.png");
         this.setIconImage(gr.getImage());
 
         this.getContentPane().setBackground(new Color(148, 168, 210));
@@ -79,9 +82,9 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
         center.addActionListener(this);
         isConected.addActionListener(this);
 
-        this.panel = new Panel((DirectedWeightedGraph) g.getGraph());
-        this.G = (DirectedWeightedGraph) g.getGraph();
+
         this.graph_algo = g;
+        this.G = g.getGraph();
         this.setResizable(true);
         this.setVisible(true);
         this.add(this.panel);
@@ -94,57 +97,45 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == save) {
-            JFrame fr = new JFrame();
-            fr.setLayout(null);
-            fr.setSize(300, 150);
-            fr.setLocation(100, 100);
-            JLabel l = new JLabel();
-            l.setBounds(50, 100, 250, 20);
-            JButton b = new JButton("Save");
-            b.setBounds(50, 150, 95, 30);
-            b.addActionListener(this);
-            l.setText("Are you sure you want to save this changes?");
-            fr.add(b);
-            fr.add(l);
-            this.repaint();
-            fr.setVisible(true);
-            //////לעשות תנאי
-
-            JFileChooser fc = new JFileChooser();
-            try {
-                fc.setCurrentDirectory(new File("./data"));
-            } catch (Exception E) {
+            JFileChooser jf = new JFileChooser();
+            jf.setCurrentDirectory(new File("."));
+            int ans = jf.showSaveDialog(null); // in order to choose where to save the Json file
+            if(ans == JFileChooser.APPROVE_OPTION){
+                String getPath = jf.getSelectedFile().getAbsolutePath();
+                this.graph_algo.save(getPath);
             }
-            fc.setDialogTitle("Loading File");
-            int selection = fc.showOpenDialog(null);
-            if (selection == JFileChooser.FILES_ONLY) {
-                String filepath = fc.getSelectedFile().getPath();
-                this.graph_algo = new DirectedWeightedGraphAlgorithms();
-                this.graph_algo.load(filepath);
-
-            }
-
-
         }
+
 
 
         if (e.getSource() == this.load) {
-            JFileChooser fc = new JFileChooser();
+
+            DirectedWeightedGraphAlgorithms neGraph = new DirectedWeightedGraphAlgorithms(this.G);
+            Container count = getContentPane();
             try {
-                fc.setCurrentDirectory(new File("./data"));
-            } catch (Exception E) {
-            }
-            fc.setDialogTitle("Loading File");
-            int selection = fc.showOpenDialog(null);
-            if (selection == JFileChooser.APPROVE_OPTION) {
-                String filepath = fc.getSelectedFile().getPath();
-                this.graph_algo = new DirectedWeightedGraphAlgorithms();
-                this.graph_algo.load(filepath);
-                new Panel((DirectedWeightedGraph) graph_algo.getGraph());
-                this.repaint();
-                this.setVisible(true);
+                JFileChooser load_file = new JFileChooser();
+                load_file.setCurrentDirectory(new File("Data"));
+                int choose = load_file.showOpenDialog(this);
+                if (choose == JFileChooser.APPROVE_OPTION) {
+                    count.removeAll();
+                    File file = load_file.getSelectedFile();
+                    neGraph.load(String.valueOf(file));
+                    Panel newPanel = new Panel((DirectedWeightedGraph) neGraph.getGraph());
+                    this.panel = newPanel;
+                    count.add(newPanel);
+                    count.validate();
+                    count.repaint();
+                    this.G = neGraph.getGraph();
+                    this.setVisible(true);
+                }
+
+            } catch (Exception exception) {
+                System.out.println(exception.getMessage());
+
             }
         }
+
+
 
         if (e.getSource() == this.addNode) {
 
@@ -203,7 +194,7 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
             JOptionPane.showMessageDialog(new JFrame(),"the Node center of the Graph is:"+ graph_algo.center().getKey(),"Center In Graph",JOptionPane.DEFAULT_OPTION);
 
         }
-        if (e.getSource() == this.shortestPathDist) {//להתאים לפונקציה
+        if (e.getSource() == this.shortestPathDist) {
             JFrame fr = new JFrame();
             String files = JOptionPane.showInputDialog(fr,"input Source");
             String filed = JOptionPane.showInputDialog(fr,"input Destination");
@@ -216,13 +207,14 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
             fr.setLayout(null);
             fr.setSize(300, 150);
             fr.setLocation(100, 100);
-            ImageIcon gr = new ImageIcon("./api/Research/vi.jpg");
+            ImageIcon gr = new ImageIcon("Data/vi.jpg");
             fr.setIconImage(gr.getImage());
             JLabel l = new JLabel();
             l.setBounds(80, 20, 250, 20);//messege size
+            DirectedWeightedGraphAlgorithms neGraph = new DirectedWeightedGraphAlgorithms(this.G);
+
             if(this.graph_algo.isConnected()){
                 JOptionPane.showMessageDialog(fr,"This Graph is Connected");//message text
-
             }
             else {
                 JOptionPane.showMessageDialog(fr,"This Graph isn't Connected");//messege text
@@ -244,9 +236,7 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-
     }
-
     @Override
     public void mouseReleased(MouseEvent e) {
 
@@ -261,7 +251,7 @@ public class GUIGraph extends JFrame implements ActionListener, MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
-    public class Panel extends JPanel {
+    public static class Panel extends JPanel {
         DirectedWeightedGraph graph;
         private double minX;
         private double minY;

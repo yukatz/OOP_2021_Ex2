@@ -1,12 +1,13 @@
 import Interfaces.Directed_Weighted_Graph;
+import Interfaces.Node_Data;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.text.ParseException;
 
 /**
  * This class is the main class for api.Ex2 - your implementation will be tested using this class.
@@ -18,7 +19,7 @@ public class Ex2 {
      * @param json_file - a json file (e.g., G1.json - G3.gson)
      * @return
      */
-    public static Directed_Weighted_Graph getGrapg(String json_file) throws IOException, ParseException {
+    public static DirectedWeightedGraph getGrapg(String json_file) throws IOException, ParseException {
         Directed_Weighted_Graph ans = new DirectedWeightedGraph();
         JSONParser parser=new JSONParser();
         JSONObject ob= (JSONObject) parser.parse(new FileReader(json_file));
@@ -40,7 +41,7 @@ public class Ex2 {
             ans.connect(src,dest, weight);
         }
 
-        return ans;
+        return (DirectedWeightedGraph) ans;
     }
     /**
      * This static function will be used to test your implementation
