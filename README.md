@@ -36,11 +36,11 @@
 
 ## ***Results:***
 
-| Number of Nodes  | Is connected | Shortest Path  | Shortest Path Distenation | Center |  Tsp  |
-| ---------------  | ------------ | -------------  | ------------------------- | -------|-----  |
-|   1,000 Nodes    |    761 ms    |      58 ms     |        56 ms              |  3 sec |70 ms  |
-|   10,000 Nodes   |    18 sec    |     133 ms     |       302 sec             |  Long  | 396 ms|
-|  100,000 Nodes   |  Tooo Long   |      6 sec     |       22 sec              |  Long  | 31 sec|
-| 1,000,000 Nodes  |              |  Content Cell  | Content Cell              |  *I have a laptop not a spaceship*  | Cell  |
+| Number of Nodes  | Is connected | Shortest Path  | Shortest Path Distenation | Center  |  Tsp  |
+| ---------------  | ------------ | -------------  | ------------------------- | ------- |-----  |
+|   1,000 Nodes    |    761 ms    |      58 ms     |        56 ms              |  3 sec  |70 ms  |
+|   10,000 Nodes   |    18 sec    |     133 ms     |       302 sec             |  Long   | 396 ms|
+|  100,000 Nodes   |  Tooo Long   |      6 sec     |       22 sec              |Tooo Long| 31 sec|
+| 1,000,000 Nodes  |   *I have a laptop not a spaceship*|
 
-As you can see, Center function takes a long time becouse the algorithm running asymptote is O(Vertex*(Vertex+Edges)^2) and vertex number grounin, the time is grouning.
+### ***As you can see, Center function takes a long time becouse the algorithm running asymptote is O(Vertex(Vertex+Edges)^2)and vertex number grounin, the time is grouning.***
