@@ -30,6 +30,7 @@
       _- https://en.wikipedia.org/wiki/Travelling_salesman_problem
      
 # **UML**
+![UMLGraphs](https://user-images.githubusercontent.com/92925727/146197322-ed01c7c8-10bd-469a-8951-21763aa2a2b6.jpeg)
 
 
 
@@ -37,8 +38,8 @@
 
 | Number of Nodes  | Is connected | Shortest Path  | Shortest Path Distenation | Center | Tsp |
 | ---------------  | ------------ | -------------  | ------------------------- | -------|-----|
-|   1,000 Nodes    | Content Cell |  Content Cell  | Content Cell              | Cell   | Cell|
-|   10,000 Nodes   | Content Cell |  Content Cell  | Content Cell              | Cell   | Cell|
+|   1,000 Nodes    |    761 ms    |      58 ms      |        56 ms             |  3 sec |70 ms|
+|   10,000 Nodes   |    18 sec    |  133 ms  | 302 sec              | Cell   | Cell|
 |  100,000 Nodes   | Content Cell |  Content Cell  | Content Cell              | Cell   | Cell|
 | 1,000,000 Nodes  |              |  Content Cell  | Content Cell              | Cell   | Cell|
 
