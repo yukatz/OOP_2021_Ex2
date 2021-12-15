@@ -2,9 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 import java.io.File;
+import java.util.Iterator;
 
-public class GUIGraph extends JFrame implements ActionListener {
+public class GUIGraph extends JFrame implements ActionListener, MouseListener {
     JMenuBar menu;
     JMenu file;
     JMenu edit;
@@ -18,11 +22,12 @@ public class GUIGraph extends JFrame implements ActionListener {
     JMenuItem shortestPathDist;
     JMenuItem center;
     JMenuItem isConected;
+    private Panel panel;
     private ActionEvent e;
-    private DirectedWeightedGraph G;
+    private Directed_Weighted_Graph G;
     private DirectedWeightedGraphAlgorithms graph_algo;
 
-    public GUIGraph() {
+    public GUIGraph(DirectedWeightedGraphAlgorithms g) {
         super();
         /////////////Frame/////////////
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize().getSize();
@@ -32,7 +37,7 @@ public class GUIGraph extends JFrame implements ActionListener {
         ImageIcon gr = new ImageIcon("./api/Research/graphicon.png");
         this.setIconImage(gr.getImage());
 
-        this.getContentPane().setBackground(new Color(148, 179, 210));
+        this.getContentPane().setBackground(new Color(148, 168, 210));
         /////////////Menu Tools/////////////
         menu = new JMenuBar();
         file = new JMenu("File");
@@ -71,15 +76,16 @@ public class GUIGraph extends JFrame implements ActionListener {
         center.addActionListener(this);
         isConected.addActionListener(this);
 
-
+        this.panel = new Panel(g.getGraph());
+        this.G = g.getGraph();
+        this.graph_algo = g;
+        this.setResizable(true);
         this.setVisible(true);
+        this.add(this.panel);
 
 
     }
 
-    public static void main(String[] args) {
-        new GUIGraph();
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -118,165 +124,88 @@ public class GUIGraph extends JFrame implements ActionListener {
         }
 
 
-           if (e.getSource() == this.load) {
-                JFileChooser fc = new JFileChooser();
-                try {
-                    fc.setCurrentDirectory(new File("./data"));
-                } catch (Exception E) {
-                }
-                fc.setDialogTitle("Loading File");
-                int selection = fc.showOpenDialog(null);
-                if (selection == JFileChooser.APPROVE_OPTION) {
-                    String filepath = fc.getSelectedFile().getPath();
-                    this.graph_algo = new DirectedWeightedGraphAlgorithms();
-                    this.graph_algo.load(filepath);
-                    ////accept message////
-                    JFrame fr = new JFrame();
-                    fr.setLayout(null);
-                    fr.setSize(300, 150);
-                    fr.setLocation(100, 100);
-                    JLabel l = new JLabel();
-                    l.setBounds(80, 20, 250, 20);
-                    JButton b = new JButton("OK");
-                    b.setBounds(80, 40, 95, 30);
-                    b.addActionListener(this);
-                    l.setText("Graph was loaded");
-                    fr.add(b); fr.add(l);
-                    this.repaint();
-                    fr.setVisible(true);
-                }
-            }
-
-
-
-
-
+        if (e.getSource() == this.load) {
+               JFileChooser fc = new JFileChooser();
+               try {
+                   fc.setCurrentDirectory(new File("./data"));
+               } catch (Exception E) {
+               }
+               fc.setDialogTitle("Loading File");
+               int selection = fc.showOpenDialog(null);
+               if (selection == JFileChooser.APPROVE_OPTION) {
+                   String filepath = fc.getSelectedFile().getPath();
+                   this.graph_algo = new DirectedWeightedGraphAlgorithms();
+                   this.graph_algo.load(filepath);
+                   new Panel(graph_algo.getGraph());
+                   this.repaint();
+                   this.setVisible(true);
+               }
+           }
 
         if (e.getSource() == this.addNode) {
-            JFrame fr = new JFrame();
-            fr.setLayout(null);
-            fr.setSize(300, 150);
-            fr.setLocation(100, 100);
-            fr.setTitle("Node Adding");
-            ImageIcon gr = new ImageIcon("./api/Research/graphicon.png");
-            fr.setIconImage(gr.getImage());
-            //////Message//////
-            JLabel l = new JLabel();
-            l.setBounds(80, 20, 250, 20);//messege size
-            l.setText("Enter Node data");//messege text//לוודא מול הבנאים
 
-            //////Text insert line//////
-            JTextField x = new JTextField();
-            x.setBounds(65, 40, 80, 20);//text line size
-            //////Button//////
-            JButton b = new JButton("Add Node");// text
-            b.setBounds(100, 60, 90, 20);//button size
-
-            fr.add(b);fr.add(x);fr.add(l);//add all to window
-            b.addActionListener(this);//listener to the button
+            JFrame fra = new JFrame();
+            String x = JOptionPane.showInputDialog(fra,"input x ");
+            String y = JOptionPane.showInputDialog(fra,"input y");
+            String z = JOptionPane.showInputDialog(fra,"input z");
+            String wei = JOptionPane.showInputDialog(fra,"input weight(key)");
+            int xx = Integer.parseInt(x);
+            int yy = Integer.parseInt(y);
+            int zz = Integer.parseInt(z);
+            int weig = Integer.parseInt(wei);
+            NodeData a0 = new NodeData(xx,yy,zz,weig);
+            G.addNode(a0);
+            this.graph_algo.init(this.G);
+            this.add(panel);
             this.repaint();
-            fr.setVisible(true);
         }
 
         if (e.getSource() == this.addEdge) {
             JFrame fr = new JFrame();
-            fr.setLayout(null);
-            fr.setSize(300, 150);
-            fr.setLocation(100, 100);
-            fr.setTitle("Edge Adding");
-            ImageIcon gr = new ImageIcon("./api/Research/graphicon.png");
-            fr.setIconImage(gr.getImage());
-            //////Message//////
-            JLabel l = new JLabel();
-            l.setBounds(80, 20, 250, 20);//messege size
-            l.setText("Enter source and destination of new edge");//messege text
-
-            //////Text insert line//////
-            JTextField textline = new JTextField();
-            textline.setBounds(65, 40, 160, 20);//text line size
-
-            //////Button//////
-            JButton b = new JButton("Add Edge");// text
-            b.setBounds(100, 60, 90, 20);//button size
-
-            fr.add(b);
-            fr.add(textline);
-            fr.add(l);//add all to window
-
-            b.addActionListener(this);//listener to the button
-
+            String source = JOptionPane.showInputDialog(fr,"input Source Node");
+            String dest = JOptionPane.showInputDialog(fr,"input Destination Node");
+            String weight = JOptionPane.showInputDialog(fr,"input weight path");
+            int src = Integer.parseInt(source);
+            int des = Integer.parseInt(dest);
+            int wei = Integer.parseInt(weight);
+            G.connect(src,des,wei);
+            this.graph_algo.init(this.G);
+            this.add(panel);
             this.repaint();
-            fr.setVisible(true);
         }
 
         if (e.getSource() == this.removeEdge) {
             JFrame fr = new JFrame();
-            fr.setLayout(null);
-            fr.setSize(300, 150);
-            fr.setLocation(100, 100);
-            fr.setTitle("Edge removing");
-            ImageIcon gr = new ImageIcon("./api/Research/graphicon.png");
-            fr.setIconImage(gr.getImage());
-            //////Message//////
-            JLabel l = new JLabel();
-            l.setBounds(80, 20, 250, 20);//messege size
-            l.setText("Witch edge to remove?");//messege text
-
-            //////Text insert line//////
-            JTextField textline = new JTextField();
-            textline.setBounds(65, 40, 160, 20);//text line size
-
-            //////Button//////
-            JButton b = new JButton("Remove");// text
-            b.setBounds(100, 60, 90, 20);//button size
-
-            fr.add(b);
-            fr.add(textline);
-            fr.add(l);//add all to window
-
-            b.addActionListener(this);//listener to the button
-
-            this.repaint();
-            fr.setVisible(true);
+            String source = JOptionPane.showInputDialog(fr," input Source Node");
+            String dest = JOptionPane.showInputDialog(fr," input Destination Node");
+            /////removing////
+            int src = Integer.parseInt(source);
+            int des = Integer.parseInt(dest);
+            this.graph_algo.getGraph().removeEdge(src,des);
+            this.graph_algo.init(G);
+            repaint();
         }
 
         if (e.getSource() == this.removeNode) {
             JFrame fr = new JFrame();
-            fr.setLayout(null);
-            fr.setSize(300, 150);
-            fr.setLocation(100, 100);
-            fr.setTitle("Node Removing");
-            ImageIcon gr = new ImageIcon("./api/Research/graphicon.png");
-            fr.setIconImage(gr.getImage());
-            //////Message//////
-            JLabel l = new JLabel();
-            l.setBounds(80, 20, 250, 20);//messege size
-            l.setText("Which node to remove?");//messege text
-
-            //////Text insert line//////
-            JTextField textline = new JTextField();
-            textline.setBounds(65, 40, 160, 20);//text line size
-
-            //////Button//////
-            JButton b = new JButton("Remove");// text
-            b.setBounds(100, 60, 90, 20);//button size
-
-            fr.add(b);
-            fr.add(textline);
-            fr.add(l);//add all to window
-
-            b.addActionListener(this);//listener to the button
-
-            this.repaint();
-            fr.setVisible(true);
+            String node=JOptionPane.showInputDialog(fr,"Enter the key of Node you want to remove");
+            int KeyNode=Integer.parseInt(node);
+            this.G.removeNode(KeyNode);
+            this.graph_algo.init(G);
+            repaint();
         }
 
         if (e.getSource() == this.center) {//להתאים
-
+         JOptionPane.showMessageDialog(new JFrame(),"the Node center of the Graph is:"+ graph_algo.center().getKey(),"Center In Graph",JOptionPane.DEFAULT_OPTION);
 
         }
         if (e.getSource() == this.shortestPathDist) {//להתאים לפונקציה
-
+            JFrame fr = new JFrame();
+            String files = JOptionPane.showInputDialog(fr,"input Source");
+            String filed = JOptionPane.showInputDialog(fr,"input Destination");
+                int src = Integer.parseInt(files);
+                int dest = Integer.parseInt(filed);
+                JOptionPane.showMessageDialog(fr,"the short path from source to destination is:"+this.graph_algo.shortestPathDist(src,dest));
         }
         if (e.getSource() == this.isConected) {
             JFrame fr = new JFrame();
@@ -288,25 +217,152 @@ public class GUIGraph extends JFrame implements ActionListener {
             JLabel l = new JLabel();
             l.setBounds(80, 20, 250, 20);//messege size
             if(this.graph_algo.isConnected()){
-                l.setText("This Graph is Connected");//messege text
+                JOptionPane.showMessageDialog(fr,"This Graph is Connected");//message text
 
             }
             else {
-                l.setText("This Graph isn't Connected");//messege text
+                JOptionPane.showMessageDialog(fr,"This Graph isn't Connected");//messege text
 
             }
             fr.add(l);
             this.repaint();
-            fr.setVisible(true);
+            fr.setVisible(false);
 
 
         }
     }
 
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+    public class Panel extends JPanel {
+        Directed_Weighted_Graph graph;
+        private double minX;
+        private double minY;
+        private final int ARR_SIZE = 7;
+        private double maxX;
+        private double maxY;
+        private double scaleX;
+        private double scaleY;
 
 
-}
+        public Panel(Directed_Weighted_Graph graph) {
+            this.setBackground(Color.black);
+            this.setFocusable(true);
+            this.graph = graph;
+            MaxMinForXY();
+        }
+
+        private void MaxMinForXY() {
+            Iterator<Node_Data> n = graph.nodeIter();
+            Node_Data node = n.next();
+            minX = node.getLocation().x();
+            minY = node.getLocation().y();
+
+            maxX = node.getLocation().x();
+            maxY = node.getLocation().y();
+            while (n.hasNext()) {
+                node = n.next();
+                minX = Math.min(minX, node.getLocation().x());
+                minY = Math.min(minY, node.getLocation().y());
+
+                maxX = Math.max(maxX, node.getLocation().x());
+                maxY = Math.max(maxY, node.getLocation().y());
+            }
+
+        }
+
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            this.scaleX = this.getWidth() / Math.abs(maxX - minX)*0.89999 ;
+            this.scaleY = this.getHeight() / Math.abs(maxY - minY)*0.855;
+            drawGraph(g);
+        }
+
+        private void drawGraph(Graphics g) {
+            Iterator<Node_Data> NodesIter=this.graph.nodeIter();
+            while(NodesIter.hasNext()){
+                Node_Data n=NodesIter.next();
+                drawNode(g,n);
+                Iterator<EdgeData> edgesIter=this.graph.edgeIter(n.getKey());
+                while(edgesIter.hasNext()){
+                    EdgeData e=edgesIter.next();
+                    drawEdge(g,e);
+                }
+            }
+        }
+
+        public void drawNode(Graphics g,Node_Data node) {
+            int x = (int) ((node.getLocation().x() - this.minX) * this.scaleX);
+            int y = (int) ((node.getLocation().y() - this.minY) * this.scaleY);
+            g.setColor(Color.RED);
+            g.fillOval(x, y, 24, 24);
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("OOP", Font.BOLD, 15));
+            g.drawString(String.valueOf(node.getKey()), x+8 , y+14 );
+
+        }
+
+
+        public void drawEdge(Graphics g,EdgeData edge) {
+            double x1 = graph.getNode(edge.getSrc()).getLocation().x();
+            x1 = ((x1 - minX) * this.scaleX) + 16.5;
+            double x2 = graph.getNode(edge.getSrc()).getLocation().y();
+            x2 = ((x2 - minY) * this.scaleY) + 16.5;
+
+            double y1 = this.graph.getNode(edge.getDest()).getLocation().x();
+            y1 = ((y1 - this.minX) * this.scaleX) + 16.5;
+            double y2 = this.graph.getNode(edge.getDest()).getLocation().y();
+            y2 = ((y2 - this.minY) * this.scaleY) + 16.5;
+
+            g.setColor(Color.BLUE);
+            drawArrow(g,(int) x1, (int) x2, (int) y1, (int) y2);
+            String weightString =String.valueOf(edge.getWeight()) ;
+            weightString = weightString.substring(0,weightString.indexOf(".")+2);
+
+            g.setColor(Color.green);
+            g.setFont(new Font("OOP", Font.BOLD, 15));
+            g.drawString(weightString, (int)(x1*0.25 + y1*0.75),(int)(x2*0.25 + y2*0.75));
+
+        }
+        void drawArrow(Graphics g1, int x1, int y1, int x2, int y2) {
+            Graphics2D g = (Graphics2D) g1.create();
+            double dx = x2 - x1, dy = y2 - y1;
+            double angle = Math.atan2(dy, dx);
+            int len = (int) Math.sqrt(dx*dx + dy*dy);
+            AffineTransform at = AffineTransform.getTranslateInstance(x1, y1);
+            at.concatenate(AffineTransform.getRotateInstance(angle));
+            g.transform(at);
+            g.drawLine(0, 0, len, 0);
+            g.fillPolygon(new int[] {len, len-ARR_SIZE, len-ARR_SIZE, len},
+                    new int[] {0, -ARR_SIZE, ARR_SIZE, 0}, 4);
+        }
+
+
+        }
+    }
 
 
 
