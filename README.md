@@ -32,6 +32,7 @@
 # **UML**
 ![UMLGraphs](https://user-images.githubusercontent.com/92925727/146197322-ed01c7c8-10bd-469a-8951-21763aa2a2b6.jpeg)
 
+![UML](https://user-images.githubusercontent.com/80645472/146196966-96125f86-bbf0-43f6-a531-8677cd0cd605.png)
 
 
 ## ***Results:***
