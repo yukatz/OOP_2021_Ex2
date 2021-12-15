@@ -45,14 +45,16 @@
 
 ### ***As you can see, Center function takes a long time becouse the algorithm running asymptote is O(Vertex(Vertex+Edges)^2)and vertex number grounin, the time is grouning.***
 
-##How to Running the GUI:
+## **How to Running the GUI:
+
 Open a folder, enter to this folder the graphs you want to load and the file 'Ex2.jar'. 
 In the cmd run script: java -jar Ex2.jar .json.
 
-##How to work with the GUI:
+## **How to work with the GUI:
+
 After running the script a window will be opened. In the opened window, you will see the printed graph and menu. *To load a new graph into the window, enter the location of the json file on your computer into the text field and press the button "Load".
 
-now it is time to play:
+## **now it is time to play:
 there are some option to edit the graph as:
 adding edge from src to dest
 removing nodes
@@ -63,7 +65,7 @@ find the shortest distance in the graph.
 find the shortest path from src to dest.
 finding the center of the grap.
 
-it is simple to do as it shown in the video:
+it is simple to do as it shown in the video,just click:
 
 
 https://user-images.githubusercontent.com/80645472/146269661-42c7ec48-4fd3-4c00-8be0-72c256c9b389.mp4
